@@ -4,8 +4,7 @@ const bcrypt = require('bcryptjs');
 let app = require('../util/expressUtils').app;
 var session = require("express-session")
 var sessionObj;
-
-
+app.use(session({secret: 'ssshhhhh'}));
 
 //user registration
 exports.userRegistration = function(req,res){
