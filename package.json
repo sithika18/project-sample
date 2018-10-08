@@ -6,17 +6,21 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon Routes/serverEntry.js",
-    "build": "webpack --mode development ./Routes/serverEntry.js --config ./webpack.config.js",
-    "dev": "npm install && node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js --config ./webpack.config.js --watch --progress -d"
+    "build": "npm install && webpack --mode production ./Routes/serverEntry.js --config ./webpack.config.js --watch --progress -d",
+    "dev": "npm install && node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js --config ./webpack.config.js --watch --progress -d",
+    "pm2": "pm2 start ./dist/server-bundle.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
     "express": "^4.16.3",
     "mongoose": "^5.3.1",
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.4",
+    "pm2": "^3.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
