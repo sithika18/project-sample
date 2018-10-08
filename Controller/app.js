@@ -4,10 +4,10 @@ const bcrypt = require('bcryptjs');
 let app = require('../util/expressUtils').app;
 var session = require("express-session")
 var sessionObj;
-app.use(session({secret: 'ssshhhhh'}));
+app.use(session({ secret: 'ssshhhhh' }));
 
 //user registration
-exports.userRegistration = function(req,res){
+exports.userRegistration = function (req, res) {
     console.log('inside registration function')
     var userDetails = new user();
     let utcDate = new Date();
@@ -17,11 +17,11 @@ exports.userRegistration = function(req,res){
     userDetails.phoneNo = req.body.phoneNo;
     userDetails.dob = req.body.dob;
     userDetails.gender = req.body.gender;
-    if(userDetails.roles==null){
-        console.log("userDetails.roles...........................",userDetails.roles)
-        userDetails.roles="guest"
+    if (userDetails.roles == null) {
+        console.log("userDetails.roles...........................", userDetails.roles)
+        userDetails.roles = "guest"
     }
-   else  userDetails.roles = req.body.roles;
+    else userDetails.roles = req.body.roles;
     userDetails.userId = CommonUtil.generateId('C');
     userDetails.createdOn = utcDate;
     userDetails.createdBy = 'self';
@@ -29,12 +29,12 @@ exports.userRegistration = function(req,res){
     userDetails.updatedBy = 'guest';
     userDetails.password = req.body.password;
 
-    userDetails.save(function(err,results){
+    userDetails.save(function (err, results) {
         console.log('inside save')
-        if(err){
+        if (err) {
             res.send(err)
         }
-        res.send({success: true,message:"Registered Successfully"})
+        res.send({ success: true, message: "Registered Successfully" })
     })
 }
 
@@ -49,83 +49,76 @@ exports.login = function (req, res) {
         if (err) {
             res.send(err)
         } else {
-            
-                bcrypt.hash(password, results.secret, (err, hash) => {
-                    console.log('inside bcrypt')
-                    if (hash == results.password) {
-    sessionObj.email = results.emailID;
-    sessionObj.role = results.roles;
-                      
-                        res.status(200).send(results)
-                       
-                    }
-                    else {
-                        console.log("user.password>>>>>>>>>>>>>>>", ("results.password>>>>>>>>", results.password))
-                        res.send({ message: "Email and password does not match" })
-                    }
-                    
-                })
-         
-               
+
+            bcrypt.hash(password, results.secret, (err, hash) => {
+                console.log('inside bcrypt')
+                if (hash == results.password) {
+                    sessionObj.email = results.emailID;
+                    sessionObj.role = results.roles;
+                    res.status(200).send({ success: true, data: results })
+                }
+                else {
+                    res.send({ success: false, message: "Email and password does not match" })
+                }
+            })
         }
     })
-    
 
 }
 
 //get all users
-exports.getUsers = function(req, res){
+exports.getUsers = function (req, res) {
     // var userDetails = new user()
-    user.find({}).then(function(data){
-        res.send({status:200,success: true,users:data})
-    }).catch((err) =>{
-        console.log('Error : ',err)
+    user.find({}).then(function (data) {
+        res.send({ status: 200, success: true, users: data })
+    }).catch((err) => {
+        console.log('Error : ', err)
     })
 }
 
-exports.deleteUser = function(req,res){
-    user.findOneAndRemove({"userId":req.params.id},function(err,results){
+exports.deleteUser = function (req, res) {
+    user.findOneAndRemove({ "userId": req.params.id }, function (err, results) {
         console.log(req.params.id)
-        if(err){
+        if (err) {
             res.send(err)
         }
-        res.send({success: true,message:"User Deleted Successfully"})
+        res.send({ status: 200,success: true, message: "User Deleted Successfully" })
     })
 }
 
 //update Details by Admin
-exports.updateDetails = function(req,res){
-    user.findOneAndUpdate({"userId":req.params.id},{"$set":req.body}).then(function(results){
-        res.send({success: true,message:"Details Update Successfully"})
-    }).catch((err)=>{
+exports.updateDetails = function (req, res) {
+    user.findOneAndUpdate({ "userId": req.params.id }, { "$set": req.body }).then(function (results) {
+        res.send({ status: 200,success: true, message: "Details Update Successfully" })
+    }).catch((err) => {
         res.send(err)
-    })     
+    })
 }
 
 //update details By Manager
-exports.updateDetailsByMg = function(req,res){
-    user.findOneAndUpdate({"userId":req.params.id},{"$set":{"emailID":req.body.emailID,"phoneNo":req.body.phoneNo}}).then(function(results){
-        res.send({success: true,message:"Details Updated Successfully"})
-    }).catch((err)=>{
+exports.updateDetailsByMg = function (req, res) {
+    user.findOneAndUpdate({ "userId": req.params.id }, { "$set": { "emailID": req.body.emailID, "phoneNo": req.body.phoneNo } }).then(function (results) {
+        res.send({status: 200,success: true, message: "Details Updated Successfully" })
+    }).catch((err) => {
         res.send(err)
     })
 }
 
 //get details by Manager
-exports.getUserbyMg = function(req,res){
-    user.find({"roles":req.params.roles}).then(results =>{
-        res.send(results)
-    }).catch(err =>{
+exports.getUserbyMg = function (req, res) {
+    user.find({ "roles": req.params.roles }).then(results => {
+        res.send({status: 200,success: true, data: results })
+    }).catch(err => {
         res.send(err)
     })
 }
 
 //get user by Email
-exports.getUserByEmail =  (req, res) => {
-    user.findOne({ "emailID" : sessionObj.email}).then(function(data){
-        res.send({status:200,users:data})
-    }).catch((err) =>{
-        console.log('Error : ',err)
+exports.getUserByEmail = (req, res) => {
+    user.findOne({ "emailID": sessionObj.email }).then(function (data) {
+        res.send({ status: 200,success: true, users: data })
+    }).catch((err) => {
+        console.log('Error : ', err)
     })
 
 }
