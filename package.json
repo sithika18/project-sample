@@ -1,0 +1,28 @@
+{
+  "name": "projectwork",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon Routes/serverEntry.js",
+    "build": "webpack --mode development ./Routes/serverEntry.js --config ./webpack.config.js",
+    "dev": "npm install && node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js --config ./webpack.config.js --watch --progress -d"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.3.1",
+    "nodemon": "^1.18.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.4",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
+  }
+}
