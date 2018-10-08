@@ -23,6 +23,7 @@ exports.userRegistration = function (req, res) {
     }
     else userDetails.roles = req.body.roles;
     userDetails.userId = CommonUtil.generateId('C');
+    userDetails.reportingId ="";
     userDetails.createdOn = utcDate;
     userDetails.createdBy = 'self';
     userDetails.updatedOn = utcDate;
@@ -121,4 +122,12 @@ exports.getUserByEmail = (req, res) => {
         res.send({success:false,data:err})
     })
 
+}
+exports.getUserByReportingId = (req, res) => {
+    user.findOne({ "reportingId": req.params.reportingId }).then(function (data) {
+        res.send({ status: 200,success: true, users: data })
+    }).catch((err) => {
+        res.send({success:false,data:err})
+    })
+    
 }

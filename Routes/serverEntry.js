@@ -20,4 +20,7 @@ router.get("/users", project.getUsers)
 router.delete("/delete/:id",project.deleteUser)
 router.put("/update/:id",project.updateDetails)
 router.put("/manager/update/:id",project.updateDetailsByMg)
-router.get("/manager/users/:roles",project.getUserbyMg)
+router.get("/manager/users/:roles",project.getUserbyMg);
+router.get("/user",project.getUserByEmail)
+
+router.get("/user/:reportingId",project.getUserByReportingId)

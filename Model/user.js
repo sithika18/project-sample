@@ -6,6 +6,9 @@ var userSchema = new schema({
   userId:{
       type:String 
   },
+  reportingId:{
+    type:String 
+  },
   name:{
       type:String
   },
