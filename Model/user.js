@@ -41,6 +41,9 @@ var userSchema = new schema({
   },
   updatedBy:{
       type:String
+  },
+  reportingId:{
+      type:String
   }
 },{collection:"User"})
 

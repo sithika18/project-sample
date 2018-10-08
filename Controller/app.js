@@ -28,11 +28,12 @@ exports.userRegistration = function (req, res) {
     userDetails.updatedOn = utcDate;
     userDetails.updatedBy = 'guest';
     userDetails.password = req.body.password;
+    userDetails.reportingId = "";
 
     userDetails.save(function (err, results) {
         console.log('inside save')
         if (err) {
-            res.send({success:false,data:err})
+            res.send({ success: false, data: err })
         }
         res.send({ success: true, message: "Registered Successfully" })
     })
@@ -46,8 +47,9 @@ exports.login = function (req, res) {
     let password = req.body.password;
     user.findOne({ "emailID": email }, function (err, results) {
         console.log("resuls>>>>>>>>>>>>>>>>>>>>>>>>>>>>", results)
+        
         if (err) {
-            res.send({success:false,data:err})
+            res.send({ success: false, data: err })
         } else {
 
             bcrypt.hash(password, results.secret, (err, hash) => {
@@ -55,6 +57,8 @@ exports.login = function (req, res) {
                 if (hash == results.password) {
                     sessionObj.email = results.emailID;
                     sessionObj.role = results.roles;
+                    session.userId = results.userId
+                    console.log("sessionObj.userId>>>>>>>>>>>>>>>",JSON.stringify(sessionObj.email))
                     res.status(200).send({ success: true, data: results })
                 }
                 else {
@@ -72,53 +76,63 @@ exports.getUsers = function (req, res) {
     user.find({}).then(function (data) {
         res.send({ status: 200, success: true, users: data })
     }).catch((err) => {
-        res.send({success:false,data:err})
+        res.send({ success: false, data: err })
     })
 }
 
+//delete user
 exports.deleteUser = function (req, res) {
     user.findOneAndRemove({ "userId": req.params.id }, function (err, results) {
         console.log(req.params.id)
         if (err) {
-            res.send({success:false,data:err})
+            res.send({ success: false, data: err })
         }
-        res.send({ status: 200,success: true, message: "User Deleted Successfully" })
+        res.send({ status: 200, success: true, message: "User Deleted Successfully" })
     })
 }
 
 //update Details by Admin
 exports.updateDetails = function (req, res) {
     user.findOneAndUpdate({ "userId": req.params.id }, { "$set": req.body }).then(function (results) {
-        res.send({ status: 200,success: true, message: "Details Update Successfully" })
+        res.send({ status: 200, success: true, message: "Details Update Successfully" })
     }).catch((err) => {
-        res.send({success:false,data:err})
+        res.send({ success: false, data: err })
     })
 }
 
 //update details By Manager
 exports.updateDetailsByMg = function (req, res) {
     user.findOneAndUpdate({ "userId": req.params.id }, { "$set": { "emailID": req.body.emailID, "phoneNo": req.body.phoneNo } }).then(function (results) {
-        res.send({status: 200,success: true, message: "Details Updated Successfully" })
+        res.send({ status: 200, success: true, message: "Details Updated Successfully" })
     }).catch((err) => {
-        res.send({success:false,data:err})
+        res.send({ success: false, data: err })
     })
 }
 
 //get details by Manager
-exports.getUserbyMg = function (req, res) {
-    user.find({ "roles": req.params.roles }).then(results => {
-        res.send({status: 200,success: true, data: results })
-    }).catch(err => {
-        res.send({success:false,data:err})
-    })
-}
+// exports.getUserbyMg = function (req, res) {
+//     user.find({ "roles": req.params.roles }).then(results => {
+//         res.send({ status: 200, success: true, data: results })
+//     }).catch(err => {
+//         res.send({ success: false, data: err })
+//     })
+// }
 
 //get user by Email
 exports.getUserByEmail = (req, res) => {
     user.findOne({ "emailID": sessionObj.email }).then(function (data) {
-        res.send({ status: 200,success: true, users: data })
+        res.send({ status: 200, success: true, users: data })
     }).catch((err) => {
-        res.send({success:false,data:err})
+        res.send({ success: false, data: err })
     })
-
 }
+
+//get details by Manager with reportingId
+exports.getUserbyMg = function (req, res) {
+    user.find({ "reportingId": req.params.id }).then(results => {
+        res.send({ status: 200, success: true, data: results })
+    }).catch(err => {
+        res.send({ success: false, data: err })
+    })
+}
+
