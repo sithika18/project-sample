@@ -15,14 +15,14 @@ exports.generateId = function(type) {
         min = utcDate.getUTCMinutes(),
         sec = utcDate.getUTCSeconds(),
         ms = utcDate.getUTCMilliseconds();
-
+   
     randomNumber += (date < 10 ? '0' + date : date);
     randomNumber += (month < 10 ? '0' + month : month);
     randomNumber += year ;
-    randomNumber += (hour < 10 ? '0' + hour : hour);
-    randomNumber += (min < 10 ? '0' + min : min);
-    randomNumber += (sec < 10 ? '0' + min : sec);
-    randomNumber += ms ;
+    // randomNumber += (hour < 10 ? '0' + hour : hour);
+    // randomNumber += (min < 10 ? '0' + min : min);
+    // randomNumber += (sec < 10 ? '0' + min : sec);
+    // randomNumber += ms ;
 
     return randomNumber;
 }

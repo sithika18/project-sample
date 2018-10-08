@@ -67,3 +67,13 @@ exports.getUsers = function(req, res){
         console.log('Error : ',err)
     })
 }
+
+exports.deleteUser = function(req,res){
+    user.findOneAndRemove({"userId":req.params.id},function(err,results){
+        console.log(req.params.id)
+        if(err){
+            res.send(err)
+        }
+        res.send({message:"User Deleted Successfully"})
+    })
+}
