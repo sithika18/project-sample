@@ -1,5 +1,5 @@
-var express = require("express");
-var app = express();
+let app = require('../util/expressUtils').app;
+let express = require('../util/expressUtils').express;
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var router = express.Router()
@@ -18,3 +18,6 @@ router.post("/registration",project.userRegistration)
 router.post("/login",project.login)
 router.get("/users", project.getUsers)
 router.delete("/delete/:id",project.deleteUser)
+router.put("/update/:id",project.updateDetails)
+router.put("/manager/update/:id",project.updateDetailsByMg)
+router.get("/manager/users/:roles",project.getUserbyMg)
