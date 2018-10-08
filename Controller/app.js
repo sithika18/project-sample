@@ -119,3 +119,13 @@ exports.getUserbyMg = function(req,res){
         res.send(err)
     })
 }
+
+//get user by Email
+exports.getUserByEmail =  (req, res) => {
+    user.findOne({ "emailID" : sessionObj.email}).then(function(data){
+        res.send({status:200,users:data})
+    }).catch((err) =>{
+        console.log('Error : ',err)
+    })
+
+}
