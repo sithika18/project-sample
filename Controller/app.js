@@ -47,7 +47,7 @@ exports.login = function (req, res) {
     let password = req.body.password;
     user.findOne({ "emailID": email }, function (err, results) {
         console.log("resuls>>>>>>>>>>>>>>>>>>>>>>>>>>>>", results)
-        
+
         if (err) {
             res.send({ success: false, data: err })
         } else {
@@ -58,7 +58,7 @@ exports.login = function (req, res) {
                     sessionObj.email = results.emailID;
                     sessionObj.role = results.roles;
                     session.userId = results.userId
-                    console.log("sessionObj.userId>>>>>>>>>>>>>>>",JSON.stringify(sessionObj.email))
+                    console.log("sessionObj.userId>>>>>>>>>>>>>>>", JSON.stringify(sessionObj.email))
                     res.status(200).send({ success: true, data: results })
                 }
                 else {
@@ -73,8 +73,8 @@ exports.login = function (req, res) {
 //get all users
 exports.getUsers = function (req, res) {
     // var userDetails = new user()
-    user.find({}).then(function (data) {
-        res.send({ status: 200, success: true, users: data })
+    user.find({}).then(function (results) {
+        res.send({ status: 200, success: true, data: results })
     }).catch((err) => {
         res.send({ success: false, data: err })
     })
@@ -120,8 +120,8 @@ exports.updateDetailsByMg = function (req, res) {
 
 //get user by Email
 exports.getUserByEmail = (req, res) => {
-    user.findOne({ "emailID": sessionObj.email }).then(function (data) {
-        res.send({ status: 200, success: true, users: data })
+    user.findOne({ "emailID": sessionObj.email }).then(function (results) {
+        res.send({ status: 200, success: true, data: results })
     }).catch((err) => {
         res.send({ success: false, data: err })
     })
